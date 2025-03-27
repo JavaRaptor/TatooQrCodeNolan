@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>🌍 Scans par Pays</h2>
+    <canvas id="countryChart"></canvas>
+    
+    <h2>🏙️ Scans par Ville</h2>
+    <canvas id="cityChart"></canvas>
+    
+    <script>
+        async function loadStats() {
+            let response = await fetch("TON_URL_SCRIPT_GOOGLE_SHEETS");
+            let stats = await response.json();
+
+            // Stats générales
+            document.getElementById("total").innerText = stats.total;
+            document.getElementById("today").innerText = stats.today;
+            document.getElementById("week").innerText = stats.week;
+            document.getElementById("month").innerText = stats.month;
+            document.getElementById("year").innerText = stats.year;
+
+            // Graphique Scans par Pays
+            let countryCtx = document.getElementById('countryChart').getContext('2d');
+            new Chart(countryCtx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(stats.perCountry),
+                    datasets: [{
+                        data: Object.values(stats.perCountry),
+                        backgroundColor: ['red', 'blue', 'green', 'yellow', 'purple']
+                    }]
+                }
+            });
+
+            // Graphique Scans par Ville
+            let cityCtx = document.getElementById('cityChart').getContext('2d');
+            new Chart(cityCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(stats.perCity),
+                    datasets: [{
+                        label: 'Scans par Ville',
+                        data: Object.values(stats.perCity),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: { scales: { y: { beginAtZero: true } } }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", loadStats);
+    </script>
+
+</body>
+</html>

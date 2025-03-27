@@ -15,4 +15,24 @@
 <body>
 </body>
 
+<script>
+  fetch("http://ip-api.com/json")
+    .then(response => response.json())
+    .then(data => {
+      let params = new URLSearchParams({
+        qr: "1",  // Remplace par l'ID du QR Code
+        ip: data.query,
+        country: data.country,
+        city: data.city
+      });
+
+      fetch("https://script.google.com/macros/s/AKfycbybD1OBABomoIEtJzEtDrYk3RCxv5LBkOZpEZ8S_JP6ff1iPPWjit-Ez_uwtDOVhM2q/exec" + params)
+        .then(response => response.text())
+        .then(data => console.log("Scan enregistré :", data))
+        .catch(error => console.error("Erreur :", error));
+    })
+    .catch(error => console.error("Erreur de géolocalisation :", error));
+</script>
+
+
 </html>
