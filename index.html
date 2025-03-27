@@ -16,30 +16,4 @@
 <body>
 </body>
 
-<script>
-    fetch("https://api.bigdatacloud.net/data/ip-geolocation?key=bdc_e17f64d6b6c04d969ef0da334d15c573")
-            .then(response => response.json())
-            .then(data => {
-                let params = new URLSearchParams({
-                    qr: "1",  // Remplace par l'ID du QR Code
-                    ip: data.ip || "unknown",
-                    country: data.location?.country?.name || "unknown",
-                    city: data.location?.city || "unknown"
-                });
-
-                let url = "https://api.allorigins.win/get?url=" + encodeURIComponent("https://script.google.com/macros/s/AKfycbxwGAd80qZGmJWb8-ZYRIeJZBSzrLRnGs7Qlq95iTuSlUH8w-FbuwqgkVfcand5Jtg/exec?" + params);
-
-                console.log("Envoi des données à :", url);
-
-                fetch(url)
-                    .then(response => response.text())
-                    .then(data => console.log("Réponse du serveur :", data))
-                    .catch(error => console.error("Erreur lors de l'envoi des données :", error));
-            })
-            .catch(error => console.error("Erreur de géolocalisation :", error));
-
-</script>
-
-
-
 </html>
